@@ -84,13 +84,10 @@ table = {0: "No",
 def disponibilidade(table_id):
   return table[table_id]
 
-#code = [0, 1]
-#for c in code:
-  #df1['Table booking'] = df1['Table booking'].apply(lambda x: disponibilidade(x)) 
+code = [0, 1]
+for c in code:
   
-  #df1['Online delivery'] = df1['Online delivery'].apply(lambda x: disponibilidade(x))
-  
-  #df1['Is delivering now'] = df1['Is delivering now'].apply(lambda x: disponibilidade(x))
+  df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
 
 #-----------------------------------------------------------------------------------------------  
 
@@ -110,7 +107,7 @@ df1["Cuisines"] = df1.loc[:, "Cuisines"].astype(str).apply(lambda x: x.split(","
 
 df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Locality',
            'Locality Verbose', 'Longitude', 'Latitude', 'Cuisines', 'Currency', 'Average_cost_for_two', 
-           'Table_booking', 'Online_delivery', 'Is_delivering_now',
+           'Table_booking', 'Online_delivery', 'Is_delivering',
            'Price_range', 'Ratings', 'Colors', 'Rating_text', 'Votes']]  
 
 
