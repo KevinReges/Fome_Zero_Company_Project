@@ -210,8 +210,8 @@ def make_sidebar(df1):
     image = Image.open('logo_fome_zero.png')
     st.sidebar.image(image, width=120)
     
-    st.sidebar.markdown('# :orange[Fome Zero]')
-    st.sidebar.markdown('### :green[Seu restaurante está aqui!]')
+    st.sidebar.markdown('# Fome Zero')
+    st.sidebar.markdown('### Seu restaurante está aqui!')
     st.sidebar.markdown("## Cidades 🌃")
     st.sidebar.markdown("""___""")
     st.sidebar.markdown("## Filtros")
@@ -285,14 +285,14 @@ with st.container():
    
     with col1:    
         
-        st.markdown('##### :blue[Quantidade de restaurantes que fazem entregas]')
+        st.markdown('##### Quantidade de restaurantes que fazem entregas')
         df3= restaurantes_deliveries(df1, op=True)
         st.dataframe(df3, use_container_width=True)
 
         
     with col2:
         
-        st.markdown('##### :red[Quantidade de restaurantes que não fazem entregas]')
+        st.markdown('##### Quantidade de restaurantes que não fazem entregas')
         df3 = restaurantes_deliveries(df1, op=False)
         st.dataframe(df3, use_container_width=True)
     
