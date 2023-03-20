@@ -1,9 +1,10 @@
 import pandas as pd
-import numpy as np
+import numpy as n
 import plotly.express as px
 import streamlit as st
 from PIL import Image
-import numpy as np
+import folium
+from streamlit_folium import folium_static
 
 df = pd.read_csv('dataset/zomato.csv')
 df1 = df.copy()

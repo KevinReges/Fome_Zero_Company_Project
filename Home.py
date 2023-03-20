@@ -3,6 +3,7 @@ import numpy as np
 import streamlit as st
 import folium
 from streamlit_folium import folium_static
+import plotly.express as px
 from PIL import Image
 
 st.set_page_config( page_title='Home', page_icon='🎲')

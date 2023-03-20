@@ -3,7 +3,7 @@ import numpy as np
 import plotly.express as px
 import streamlit as st
 from PIL import Image
-import numpy as np
+from streamlit_folium import folium_static
 import folium
 
 df = pd.read_csv('dataset/zomato.csv')

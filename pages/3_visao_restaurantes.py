@@ -6,6 +6,7 @@ import folium
 from PIL import Image
 import plotly.express as px
 
+
 df = pd.read_csv('dataset/zomato.csv')
 df1 = df.copy()
 
