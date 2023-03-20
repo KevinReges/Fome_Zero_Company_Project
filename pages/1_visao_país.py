@@ -124,7 +124,7 @@ def disponibilidade(table_id):
 code = [0, 1]
 for c in code:
   
-  df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
+    df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
         
 #---------------------------------------------------------------------------------------------------------------------
 
