@@ -105,7 +105,7 @@ df1["Cuisines"] = df1.loc[:, "Cuisines"].astype(str).apply(lambda x: x.split(","
 
 df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Locality',
            'Locality Verbose', 'Longitude', 'Latitude', 'Cuisines', 'Currency', 'Average_cost_for_two', 
-           'Table_booking', 'Online_delivery', 'Is_delivering_now', 'Is_delivering',
+           'Table_booking', 'Online_delivery', 'Is_delivering',
            'Price_range', 'Ratings', 'Colors', 'Rating_text', 'Votes']]  
 
 #--------------------------------------------------------------------------------------------------------
