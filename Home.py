@@ -118,8 +118,8 @@ df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Lo
 
 image = Image.open('logo_fome_zero.png')
 st.image(image, width=120)
-st.title(":orange[Fome Zero]")
-st.markdown("#### :**green[Procurando um novo restaurante?]**")
+st.title("Fome Zero")
+st.markdown("#### Procurando um novo restaurante?")
 
 
 with st.container():
