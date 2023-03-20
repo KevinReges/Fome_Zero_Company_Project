@@ -198,8 +198,8 @@ def make_sidebar(df1):
     image = Image.open('logo_fome_zero.png')
     st.sidebar.image(image, width=120)
     
-    st.sidebar.markdown('## :orange[Fome Zero]')
-    st.sidebar.markdown('### :green[Seu restaurante está aqui!]')
+    st.sidebar.markdown('## Fome Zero')
+    st.sidebar.markdown('### Seu restaurante está aqui!')
     st.sidebar.markdown("# Restaurantes 🍽️")
     st.sidebar.markdown("""___""")
     st.sidebar.markdown("## Filtros")
