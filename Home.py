@@ -120,7 +120,7 @@ image = Image.open('logo_fome_zero.png')
 st.image(image, width=120)
 st.title("Fome Zero")
 st.markdown("#### Procurando um novo restaurante?")
-st.markdown(”This text is :red[colored red], and this is **:blue[colored]** and bold.”)
+st.markdown(':green[$\sqrt{x^2+y^2}=1$] is a Pythagorean identity.')
 
 
 with st.container():
