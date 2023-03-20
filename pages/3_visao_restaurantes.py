@@ -198,7 +198,7 @@ def make_sidebar(df1):
     image = Image.open('logo_fome_zero.png')
     st.sidebar.image(image, width=120)
     
-    st.sidebar.markdown('## Fome Zero')
+    st.sidebar.markdown('# Fome Zero')
     st.sidebar.markdown('### Seu restaurante está aqui!')
     st.sidebar.markdown("# Restaurantes 🍽️")
     st.sidebar.markdown("""___""")
@@ -251,7 +251,7 @@ st.title('Visão Restaurantes')
 with st.container():
         
     st.markdown("""___""")
-    st.markdown(f'##### :green[Top {top_n} melhores restaurantes]')
+    st.markdown(f'##### Top {top_n} melhores restaurantes')
     df3 = top_best_restaurants(df1)
     st.dataframe(df3)
     
@@ -262,7 +262,7 @@ with st.container():
 with st.container():
         
     st.markdown("""___""")
-    st.markdown(f'##### :red[Top {top_n} piores restaurantes.]')
+    st.markdown(f'##### Top {top_n} piores restaurantes.')
     
     df3 = top_worst_restaurants(df1) 
     st.dataframe(df3)
