@@ -227,8 +227,8 @@ df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Lo
 image = Image.open('logo_fome_zero.png')
 st.sidebar.image(image, width=120)
 
-st.sidebar.markdown('# :orange[Fome Zero]')
-st.sidebar.markdown('### :green[Seu restaurante está aqui!]')
+st.sidebar.markdown('# Fome Zero')
+st.sidebar.markdown('### Seu restaurante está aqui!')
 st.sidebar.markdown("# País 🌏")
 st.sidebar.markdown("""___""")
 
