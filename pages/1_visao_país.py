@@ -92,12 +92,12 @@ def restaurants_deliveries(df1, op):
     
     if op == True:
         
-        lines = (df1['Is_delivering_now'] == 1) & (df1['Online_delivery'] == 1) 
+        lines = (df1['Is_delivering'] == 'Yes')  
         write = 'Quantidade de restaurantes que fazem entregas.'
         
     elif op == False:
         
-        lines = (df1['Is_delivering_now'] == 0) & (df1['Online_delivery'] == 0) & (df1['Country'].isin(country_options))
+        lines = (df1['Is_delivering'] == 'No') & (df1['Country'].isin(country_options))
         write = 'Quantidade de restaurantes que não fazem entregas.'
         
     cols = ['Restaurant_name', 'Country']
