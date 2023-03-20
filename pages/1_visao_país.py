@@ -113,18 +113,7 @@ def restaurants_deliveries(df1, op):
         
     return grafico
 
-#---------------------------------------------------------------------------------------------------------------------
-# Diponibilidade 0 -> No 1 -> Yes
 
-table = {0: "No", 
-         1: "Yes"}
-def disponibilidade(table_id):
-    return table[table_id]
-
-code = [0, 1]
-for c in code:
-  
-    df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
         
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -140,6 +129,19 @@ df1 = df1.rename(columns={'Average Cost for two': 'Average_cost_for_two'})
 df1 = df1.rename(columns={'Is delivering now': 'Is_delivering_now'})
 df1 = df1.rename(columns={'Price range': 'Price_range'})
 df1 = df1.rename(columns={'Rating text': 'Rating_text'})
+
+#---------------------------------------------------------------------------------------------------------------------
+# Diponibilidade 0 -> No 1 -> Yes
+
+table = {0: "No", 
+         1: "Yes"}
+def disponibilidade(table_id):
+    return table[table_id]
+
+code = [0, 1]
+for c in code:
+  
+   df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
 
 
 # Preenchimento dos nomes dos países
