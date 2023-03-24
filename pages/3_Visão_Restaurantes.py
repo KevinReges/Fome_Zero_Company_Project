@@ -146,12 +146,12 @@ def top_cuisines_aval(df1, op):
     if op == False:
         
         lines = df1['Ratings'] > 4
-        write = f'Top {top_n} culinárias melhores avaliações.'
+        write = f'Top {top_n} culinárias com as melhores avaliações.'
         
     elif op == True:   
         
         lines = (df1['Ratings'] > 0) & (df1['Ratings'] < 3.5) 
-        write = f'Top {top_n} culinárias piores avaliações.'
+        write = f'Top {top_n} culinárias com as piores avaliações.'
     
     cols = ['Cuisines', 'Ratings']    
     df2 = df1.loc[lines, cols].groupby('Cuisines').mean().sort_values('Ratings', ascending=op).reset_index()
@@ -170,9 +170,10 @@ def graph_bar_delivering(df1):
         
     cols = ['Restaurant_name', 'Is_delivering']
     df2 = df1.loc[:, cols].groupby('Is_delivering').nunique().reset_index()
-    grafico = px.bar(df2, x='Is_delivering', y='Restaurant_name',
+    grafico =  px.bar(df2, x='Is_delivering', y='Restaurant_name',
                     text= 'Restaurant_name',
-                    labels={'Is_delivering': 'Serviço de Entrega', 'Restaurant_name': 'Total de Restaurantes'})
+                    title = 'Total de restaurantes por serviço de entregas.',
+                    labels={'Is_delivering': 'Serviço de Entrega', 'Restaurant_name': 'Total de Restaurantes'}) 
     return grafico
 
 
@@ -181,7 +182,9 @@ def graph_pie_delivering(df1):
     cols = ['Restaurant_name', 'Is_delivering']
     df2 = df1.loc[:, cols].groupby('Is_delivering').nunique().reset_index()
     df2['Quantidade_porcentagem'] = np.round((df2['Restaurant_name'] * 100) / df2['Restaurant_name'].sum(), 2)
-    grafico = px.pie(df2, values='Quantidade_porcentagem', names='Is_delivering')
+    grafico = ( px.pie(df2, values='Quantidade_porcentagem', 
+                     names='Is_delivering', 
+                     title='Proporção de restaurantes por serviço de entregas') )
         
     return grafico
     
@@ -293,13 +296,11 @@ with st.container():
     
     with col1:
         
-        st.markdown('##### Proporção de restaurantes por serviço de entregas')
         grafico = graph_pie_delivering(df1)
         st.plotly_chart(grafico, use_container_width=True)
         
     with col2:
         
-        st.markdown('##### Total restaurantes por serviço de entregas.')
         grafico = graph_bar_delivering(df1)
         st.plotly_chart(grafico, use_container_width=True)
     
