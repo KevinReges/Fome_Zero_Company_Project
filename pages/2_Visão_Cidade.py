@@ -80,19 +80,22 @@ def avg_aval_by_city_graph(df1, op):
 
 def restaurantes_deliveries(df1, op):
     
+    df1 = df1.rename(columns={'Restaurant_name': 'Quantity'})
+    
     if op == True:
         
-        lines = (df1['Is_delivering'] == 'Yes') 
+        lines = (df1['Is_delivering'] == 'Yes')
         
     elif op == False:
         
         lines = ( (df1['Is_delivering'] == 'No') & (df1['Country'].isin(countries)) )
 
-    cols = ['Restaurant_name', 'Country', 'City']
+    cols = ['Quantity', 'Country', 'City']
     df2 = ( df1.loc[lines, cols].groupby(['Country', 'City'])
                                 .nunique()
-                                .sort_values('Restaurant_name', ascending=False)
+                                .sort_values('Quantity', ascending=False)
                                 .reset_index() )
+                                  
     df2 = df2.head(top_n)
 
     return df2
@@ -103,8 +106,6 @@ def restaurantes_deliveries(df1, op):
 # Renomear as colunas
 
 df1 = df1.rename(columns={'Aggregate rating': 'Ratings'})
-df1 = df1.rename(columns={'Has Online delivery': 'Online_delivery'})
-df1 = df1.rename(columns={'Has Table booking': 'Table_booking'})
 df1 = df1.rename(columns={'Restaurant ID': 'Restaurant_id'})
 df1 = df1.rename(columns={'Restaurant Name': 'Restaurant_name'})
 df1 = df1.rename(columns={'Average Cost for two': 'Average_cost_for_two'})
@@ -174,7 +175,9 @@ def disponibilidade(table_id):
 code = [0, 1]
 for c in code:
   
-  df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
+    df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
+    df1['Table_booking'] = df1['Has Table booking'].apply(lambda x: disponibilidade(x)) 
+    df1['Online_delivery'] = df1['Has Online delivery'].apply(lambda x: disponibilidade(x)) 
 
 #-----------------------------------------------------------------------------------------------  
 
@@ -212,7 +215,7 @@ def make_sidebar(df1):
     
     st.sidebar.markdown('# Fome Zero')
     st.sidebar.markdown('### Seu restaurante está aqui!')
-    st.sidebar.markdown("## Cidades 🌃")
+    st.sidebar.markdown("## Cidade  🌃")
     st.sidebar.markdown("""___""")
     st.sidebar.markdown("## Filtros")
 
@@ -285,14 +288,13 @@ with st.container():
    
     with col1:    
         
-        st.markdown('##### Quantidade de restaurantes que fazem entregas')
+        st.markdown('###### Quantidade de restaurantes que fazem entregas')
         df3= restaurantes_deliveries(df1, op=True)
         st.dataframe(df3, use_container_width=True)
 
         
     with col2:
         
-        st.markdown('##### Quantidade de restaurantes que não fazem entregas')
+        st.markdown('###### Quantidade de restaurantes que não fazem entregas')
         df3 = restaurantes_deliveries(df1, op=False)
         st.dataframe(df3, use_container_width=True)
-    
