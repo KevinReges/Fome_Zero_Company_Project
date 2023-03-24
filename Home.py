@@ -6,7 +6,7 @@ from streamlit_folium import folium_static
 import plotly.express as px
 from PIL import Image
 
-st.set_page_config( page_title='Home', page_icon='🎲')
+st.set_page_config( page_title='Home', page_icon='🏠', layout='wide')
 
 df = pd.read_csv('dataset/zomato.csv')
 df1 = df.copy()
@@ -116,9 +116,22 @@ df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Lo
 #              Layout no Streamilit
 # =====================================================
 
-image = Image.open('logo_fome_zero.png')
-st.image(image, width=120)
-st.title("Fome Zero")
+with st.container():
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        image = Image.open('logo_fome_zero.png')
+        st.image(image, width=200)
+        
+    with col2:    
+        st.title("Fome Zero")
+        
+    with col3:
+        st.write(' ')
+
+    
+st.write(' ')
 st.markdown("#### Procurando um novo restaurante?")
 
 
@@ -163,4 +176,4 @@ with st.container():
                 popup=location_info[['Restaurant_name', 'Average_cost_for_two',  'Ratings', 'Currency', 'City']],
         icon=folium.Icon(color=location_info['Colors'])).add_to(map)
 
-    folium_static(map, width=1024, height=600)  
+    folium_static(map, width=1020, height=600) 
