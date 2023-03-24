@@ -66,21 +66,27 @@ def avg_by_country(df1, column):
     
     if column == 'Ratings':
         cols = ['Country', column]
-        df2 = df1.loc[:, cols].groupby('Country').mean().sort_values(column, ascending=False).reset_index()
+        lines = df1['Country'].isin(country_options)
+        df2 = df1.loc[lines, cols].groupby('Country').mean().sort_values(column, ascending=False).reset_index()
         grafico = px.bar(df2, x='Country', y=column, text=column,
                          text_auto='.2f',
+                         title= 'Média de avaliações.',
                          labels= {'Country': 'Países', 'Ratings': 'Média avaliações'})
 
         return grafico
 
-    elif column == 'Average_cost_for_two':
+    elif column == 'Cost_for_two':
         
         cols = ['Country', 'Currency',column]
-        lines = df1[column] < 10000
-        df2 = df1.loc[lines, cols].groupby(['Country', 'Currency']).mean().sort_values(column, ascending=False).reset_index()
+        lines = (df1[column] < 10000) & (df1['Country'].isin(country_options))
+        df2 = ( np.round( df1.loc[lines, cols].groupby(['Country', 'Currency'])
+                                              .mean()
+                                              .sort_values(column, ascending=False)
+                                              .reset_index(), 2) )
         grafico = px.bar(df2, x='Country', y=column, text=column,
                          text_auto='.2f',
-                         labels= {'Country': 'Países', 'Average_cost_for_two': 'Média preço'})
+                         title = 'Média preço prato para dois em dolar.',
+                         labels= {'Country': 'Países', 'Cost_for_two': 'Média preço'})
         
         return grafico
 
@@ -121,8 +127,6 @@ def restaurants_deliveries(df1, op):
 # Renomear as colunas
 
 df1 = df1.rename(columns={'Aggregate rating': 'Ratings'})
-df1 = df1.rename(columns={'Has Online delivery': 'Online_delivery'})
-df1 = df1.rename(columns={'Has Table booking': 'Table_booking'})
 df1 = df1.rename(columns={'Restaurant ID': 'Restaurant_id'})
 df1 = df1.rename(columns={'Restaurant Name': 'Restaurant_name'})
 df1 = df1.rename(columns={'Average Cost for two': 'Average_cost_for_two'})
@@ -141,7 +145,9 @@ def disponibilidade(table_id):
 code = [0, 1]
 for c in code:
   
-   df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
+    df1['Is_delivering'] = df1['Is_delivering_now'].apply(lambda x: disponibilidade(x))
+    df1['Table_booking'] = df1['Has Table booking'].apply(lambda x: disponibilidade(x)) 
+    df1['Online_delivery'] = df1['Has Online delivery'].apply(lambda x: disponibilidade(x))
 
 
 # Preenchimento dos nomes dos países
@@ -165,14 +171,14 @@ countries = {
 }
 
 def country_name(country_id):
-  return countries[country_id]
+    return countries[country_id]
 
 
 # Criando coluna Country com nome dos paises
 
 code = [1, 14, 30, 37, 94, 148, 162, 166, 184, 189, 191, 208, 214, 215, 216]
 for i in code:
-  df1['Country'] = df1['Country Code'].apply(lambda x: country_name(x)) 
+    df1['Country'] = df1['Country Code'].apply(lambda x: country_name(x)) 
 
 #------------------------------------------------------------------------------------   
 
@@ -188,31 +194,90 @@ COLORS = {
 "FF7800": "yellow",
 }
 def color_name(color_code):
-  return COLORS[color_code]
+    return COLORS[color_code]
 
 code = ["3F7E00", "5BA829", "9ACD32", "CDD614", "FFBA00", "CBCBC8", "FF7800"]
 for i in code:
-  df1['Colors'] = df1['Rating color'].apply(lambda x: color_name(x))  
+    df1['Colors'] = df1['Rating color'].apply(lambda x: color_name(x))  
 
 #----------------------------------------------------------------------------------
-
-
-# Removendo colunas
-
-df1 = df1.drop(columns=['Country Code'])
-df1 = df1.drop(columns=['Switch to order menu'])
-df1 = df1.drop(columns=['Rating color'])
 
 # reajustastando coluna Cuisines para 1 tipo de culinaria 
 
 df1["Cuisines"] = df1.loc[:, "Cuisines"].astype(str).apply(lambda x: x.split(",")[0])
+
+#-----------------------------------------------------------------------------------
+
+# Convertendo valores para valor em dollar
+
+lista = list(df1['Currency'].unique())
+
+for c in lista:
+    
+    if c == 'Brazilian Real(R$)':
+        lines  = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 5.27
+    
+    elif c == 'Botswana Pula(P)':
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 13.25 
+
+    elif c == 'Emirati Diram(AED)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 3.67
+
+    elif c == 'Indian Rupees(Rs.)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 82.27 
+
+    elif c == 'Indonesian Rupiah(IDR)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 15.084  
+
+    elif c == 'NewZealand($)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 1.60
+
+    elif c == 'Pounds(£)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 0.81
+
+    elif c == 'Qatari Rial(QR)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 3.64
+
+    elif c == 'Rand(R)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 18.10
+
+    elif c == 'Sri Lankan Rupee(LKR)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 322.52
+
+    elif c == 'Turkish Lira(TL)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 19.04
+
+    elif c == 'Dollar($)':
+
+        lines = df1['Currency'] == c 
+        df1.loc[lines, 'Cost_for_two'] = df1.loc[lines, 'Average_cost_for_two'] / 1  
 
 
 
 # Ordenação de posições das colunas
 
 df1 = df1[['Restaurant_id', 'Restaurant_name', 'Country', 'City', 'Address', 'Locality',
-           'Locality Verbose', 'Longitude', 'Latitude', 'Cuisines', 'Currency', 'Average_cost_for_two', 
+           'Locality Verbose', 'Longitude', 'Latitude', 'Cuisines', 'Currency', 'Cost_for_two', 'Average_cost_for_two', 
            'Table_booking', 'Online_delivery', 'Is_delivering',
            'Price_range', 'Ratings', 'Colors', 'Rating_text', 'Votes']]
 
@@ -277,16 +342,14 @@ with st.container():
     
     with col1:
         
-        st.markdown('##### Média avalaliações')
+        
         grafico = avg_by_country(df1, 'Ratings')
         st.plotly_chart(grafico, use_container_width=True)
         
         
     with col2:
         
-        st.markdown('##### Média preço duas pessoas.')
-        
-        grafico = avg_by_country(df1, 'Average_cost_for_two')
+        grafico = avg_by_country(df1, 'Cost_for_two')
         st.plotly_chart(grafico, use_container_width=True)
         
         
